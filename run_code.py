@@ -1,3 +1,5 @@
+import os.path
+
 from src.docker.DockerClient import docker_run_container
 from src.docker.DockerClient import docker_get_list_container
 from utils.utils_helper import write_to_file
@@ -12,8 +14,16 @@ fullName = image + ':' + tag
 detach = True  # ключ -d
 auto_remove = True  # ключ --rm
 name = 'run_foo_v4'
-volumes = [r'C:\Users\m.merkulov\ExternalProjects\run_dcoker_container'
-           r'\tmp_config\config.yaml:/opt/cfg/config.yaml']
+path = get_relative_path(is_need_file_name=False)
+volumes = {
+    path:
+        {'bind': '/opt/cfg',
+         'mode': 'ro'}}
+#
+# print(f'volumes => {volumes}')
+
+# volumes = [r'C:\Users\m.merkulov\ExternalProjects\run_dcoker_container'
+#            r'\tmp_config\config.yaml:/opt/cfg/config.yaml']
 
 running_container = docker_run_container(image=fullName,
                                          detach=detach,

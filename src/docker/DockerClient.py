@@ -48,8 +48,7 @@ name = 'run_foo_v4'
 
 # volumes = {
 #     r'../../tmp_config/config.yaml':
-#     #    './config.yaml' :
 #         {'bind': '/opt/cfg',
 #          'mode': 'ro'}}
-volumes = [r'C:\Users\m.merkulov\ExternalProjects\run_dcoker_container'
-           r'\tmp_config\config.yaml:/opt/cfg/config.yaml']
+# volumes = [r'C:\Users\m.merkulov\ExternalProjects\run_dcoker_container'
+#            r'\tmp_config\config.yaml:/opt/cfg/config.yaml']

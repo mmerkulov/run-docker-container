@@ -18,7 +18,8 @@ def get_relative_path(file_name: str = 'config.yaml',
     else:
         abs_path = os.path.abspath(current_dir.joinpath('..',
                                                         'tmp_config'))
-    relative_path_file = os.path.relpath(abs_path)
+    # relative_path_file = os.path.relpath(abs_path)
+    relative_path_file = abs_path
     return relative_path_file
 
 
