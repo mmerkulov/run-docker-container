@@ -1,4 +1,6 @@
 import docker
+import os
+from pathlib import Path
 
 docker_client = docker.from_env()
 
@@ -67,6 +69,7 @@ def docker_get_container_id(filter: dict):
 
     return my_containers[0]
 
+
 ########################## GET CONTAINER END ###############################
 
 
@@ -78,11 +81,26 @@ def docker_get_container_id(filter: dict):
 ######################## CREATE CONTAINER END###############################
 
 
-
 def read_file() -> None:
-    with open('./tmp_config/config.yaml', 'r') as file:
+    with open('src/docker/config.yaml', 'r') as file:
         for line in file:
             print(line.rstrip('\n'))
 
 
-read_file()
+def get_relative_path(file_name: str = 'config.yaml',
+                      is_need_file_name: bool = True) -> str:
+    current_dir = Path(os.path.dirname(os.path.abspath(__file__)))
+
+    if is_need_file_name:
+        abs_path = os.path.abspath(current_dir.joinpath('..', '..',
+                                                        'tmp_config',
+                                                        file_name))
+    else:
+        abs_path = os.path.abspath(current_dir.joinpath('..', '..',
+                                                        'tmp_config'))
+    relative_path_file = os.path.relpath(abs_path)
+    return relative_path_file
+
+
+
+print(get_relative_path())

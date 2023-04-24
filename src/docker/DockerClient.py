@@ -1,8 +1,16 @@
 import docker
-from pathlib import Path
-import os
+from utils.utils_helper import get_relative_path
 
 docker_client = docker.from_env()
+
+
+def docker_build_image():
+    docker_client.images.build(path='../../',  # path to Dockerfile
+                               tag='mms-image-python-test_v2',
+                               # name, tag=latest
+                               rm=True,
+                               labels={'name': 'mms-image-python-test_v2'}
+                               )
 
 
 def docker_run_container(image: str,
@@ -17,41 +25,16 @@ def docker_run_container(image: str,
                                                 auto_remove=auto_remove,
                                                 volumes=volumes,
                                                 name=name)
-    # print(my_container, type(my_container))
 
     for line in my_container.logs(stream=True):
         print(line.decode("utf-8").strip())
 
-    return my_container
+    return my_container.short_id
 
 
-def get_relative_path(file_name: str = 'config.yaml',
-                      is_need_file_name: bool = True) -> str:
-    current_dir = Path(os.path.dirname(os.path.abspath(__file__)))
+def docker_get_list_container(all: bool = True, container_name: str = None):
+    return docker_client.containers.list(all=all)
 
-    if is_need_file_name:
-        abs_path = os.path.abspath(current_dir.joinpath('..', '..',
-                                                        'tmp_config',
-                                                        file_name))
-    else:
-        abs_path = os.path.abspath(current_dir.joinpath('..', '..',
-                                                        'tmp_config'))
-    relative_path_file = os.path.relpath(abs_path)
-    return relative_path_file
-
-
-def filling_file(my_text: str) -> None:
-    """
-    Заполняем файл
-    :return:
-    """
-    relative_path_file = get_relative_path()
-
-    with open(relative_path_file, 'w+') as file:
-        file.write(my_text)
-
-
-# filling_file(my_text='3333')
 
 pyth_on_host = get_relative_path(is_need_file_name=False)
 image = 'mms-image-python-test'
@@ -63,13 +46,10 @@ auto_remove = True  # ключ --rm
 name = 'run_foo_v4'
 # port = {'9000/tcp': '9000'}  # проброска портов
 
-pyth_on_host = pyth_on_host.replace('\\', '/')
-volumes = {r'C:\Users\m.merkulov\ExternalProjects\run_dcoker_container\tmp_config':
-               {'bind': '/opt/cfg',
-                'mode': 'ro'}}
-
-docker_run_container(image=fullName,
-                     detach=detach,
-                     auto_remove=auto_remove,
-                     volumes=volumes,
-                     name=name)
+# volumes = {
+#     r'../../tmp_config/config.yaml':
+#     #    './config.yaml' :
+#         {'bind': '/opt/cfg',
+#          'mode': 'ro'}}
+volumes = [r'C:\Users\m.merkulov\ExternalProjects\run_dcoker_container'
+           r'\tmp_config\config.yaml:/opt/cfg/config.yaml']
