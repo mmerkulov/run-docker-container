@@ -20,7 +20,7 @@ volumes = {
         {'bind': '/opt/cfg',
          'mode': 'ro'}}
 #
-# print(f'volumes => {volumes}')
+print(f'volumes => {volumes}')
 
 # volumes = [r'C:\Users\m.merkulov\ExternalProjects\run_dcoker_container'
 #            r'\tmp_config\config.yaml:/opt/cfg/config.yaml']

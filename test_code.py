@@ -102,5 +102,7 @@ def get_relative_path(file_name: str = 'config.yaml',
     return relative_path_file
 
 
+#
+# print(get_relative_path())
 
-print(get_relative_path())
+d = {'a', 123}
